@@ -1,11 +1,9 @@
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
+// 사용자가 입력한 문자열 값에 따라 사칙연산을 수행할 수 있는 계산기를 구현해야 한다.
+//문자열 계산기는 사칙연산의 계산 우선순위가 아닌 입력 값에 따라 계산 순서가 결정
 public class StringCalculator {
-
-
-    // 사용자가 입력한 문자열 값에 따라 사칙연산을 수행할 수 있는 계산기를 구현해야 한다.
-    //문자열 계산기는 사칙연산의 계산 우선순위가 아닌 입력 값에 따라 계산 순서가 결정
 
     public int execute() {
         Scanner scanner = new Scanner(System.in);
@@ -14,23 +12,22 @@ public class StringCalculator {
         try {
             input = scanner.nextLine();
         }catch (NoSuchElementException e){
-            System.out.println("공백은 입력할 수 없습니다.");
-            return 0;
+            throw new NoSuchElementException("공백은 입력할 수 없습니다.");
         }
-
+        scanner.close();
         String[] splitInput = input.split(" ");
 
-        int result = 0;
-        try {
-            result = parseInput(splitInput);
-        } catch (ArrayIndexOutOfBoundsException e) {
-            System.out.println("띄워쓰기가 잘못되었습니다.");
-        } catch (NumberFormatException e) {
-            System.out.println("숫자 자리에 다른 문자를 입력했거나 띄워쓰기가 잘못되었습니다.");
-        }
+        return throwMethod(splitInput);
+    }
 
-        scanner.close();
-        return result;
+    public int throwMethod(String[] splitInput){
+        try {
+            return parseInput(splitInput);
+        } catch (ArrayIndexOutOfBoundsException e) {
+            throw new ArrayIndexOutOfBoundsException("입력이 잘못되었습니다.");
+        } catch (NumberFormatException e) {
+            throw new NumberFormatException("숫자 자리에 다른 문자를 입력했거나 띄워쓰기가 잘못되었습니다.");
+        }
     }
 
     public int parseInput(String[] values) {
